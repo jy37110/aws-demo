@@ -1,26 +1,45 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      msg: "Waiting for API"
+    }
+  }
+
+  componentDidMount() {
+      fetch("https://ravfhvaxf4.execute-api.us-west-2.amazonaws.com/demo", {
+          method: 'POST',
+          headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+              msg: "Hello AWS API"
+          })
+      }).then(response =>{
+          if(response.status !== 200) throw new Error("Bad Request");
+          return response.json();
+      }).then(responseJson => {
+          console.log(responseJson);
+          this.setState({msg: responseJson.body.msg});
+          return responseJson;
+      }).catch(err => {
+          console.log(err);
+      });
+  }
+
+    render(){
+    return (
+        <div className="App">
+          <h1>Hello</h1>
+          <h2>{this.state.msg}</h2>
+        </div>
+    );
+  }
+
 }
 
 export default App;
