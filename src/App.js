@@ -17,7 +17,7 @@ class App extends React.Component {
               'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-              msg: "Hello AWS API"
+              msg: "Hello AWS API Reload"
           })
       }).then(response =>{
           if(response.status !== 200) throw new Error("Bad Request");
